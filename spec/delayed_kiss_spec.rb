@@ -20,6 +20,19 @@ describe DelayedKiss do
     end
   end
 
+  describe :get_async do
+    it "should send delayed job to default queue" do
+      DelayedKiss.expects(:delay).with().returns(DelayedKiss)
+      DelayedKiss.get_async("http://example.com")
+    end
+
+    it "should send delayed job to named queue if configured" do
+      DelayedKiss.queue = "named_queue"
+      DelayedKiss.expects(:delay).with(:queue => "named_queue").returns(DelayedKiss)
+      DelayedKiss.get_async("http://example.com")
+    end
+  end
+
   describe :record do
     it "should send a request to the KISSmetrics API when valid parameters are supplied" do
      DelayedKiss.expects(:get).once.returns(true)

@@ -14,6 +14,7 @@ class DelayedKiss
       if !env_config.blank?
         DelayedKiss.configure do |config|
           config.key = env_config['key']
+          config.queue = env_config['queue'] || false
           config.whiny_config = env_config['key'] || false
         end
       end

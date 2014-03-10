@@ -10,6 +10,9 @@ class DelayedKiss
   cattr_accessor :key
   @@key = nil
 
+  cattr_accessor :queue
+  @@queue = false
+
   cattr_accessor :whiny_config
   @@whiny_config = false
 
@@ -21,7 +24,11 @@ class DelayedKiss
   end
 
   def self.get_async(url)
-    self.delay.get(url)
+    if @@queue
+      self.delay(:queue => @@queue).get(url)
+    else
+      self.delay.get(url)
+    end
   end
 
   def self.record(id, event, query_params={})
